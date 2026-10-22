@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dis-Chem · CRO Report · October 2026</title>
+<style>
+  :root {
+    --green:#006B3C; --green-dark:#004D2B; --green-light:#00A65A; --green-pale:#E8F4EE;
+    --white:#FFFFFF; --off-white:#F5F8F6; --charcoal:#1A2E22; --slate:#2D4A38;
+    --gray:#6B7B72; --gray-light:#DDE8E2; --red:#C0392B; --red-pale:#FCECEA;
+    --amber:#D4820A; --amber-pale:#FEF6E6; --teal:#00838A; --teal-pale:#E6F4F5;
+    --radius:8px; --radius-lg:14px; --shadow:0 2px 12px rgba(0,0,0,0.07);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Segoe UI',Arial,sans-serif;background:var(--off-white);color:var(--charcoal);line-height:1.6;font-size:15px}
+  .container{max-width:1140px;margin:0 auto;padding:0 24px}
+  .section{padding:56px 0}
+  .section--white{background:var(--white)}
+  .section--green{background:var(--green);color:var(--white)}
+
+  .header{background:var(--green-dark);position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(0,0,0,.25)}
+  .header-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;max-width:1140px;margin:0 auto;gap:16px}
+  .header-brand{display:flex;align-items:center;gap:14px}
+  .header-logo{width:36px;height:36px;background:var(--green-light);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:#fff}
+  .header-title{color:#fff;font-size:14px;font-weight:600}
+  .header-sub{color:#A9D9BE;font-size:12px}
+  .header-tag{background:var(--green-light);color:#fff;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 12px;border-radius:20px;white-space:nowrap}
+
+  .hero{background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;padding:64px 0 56px}
+  .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#A9D9BE;font-weight:700;margin-bottom:12px}
+  .hero h1{font-size:38px;line-height:1.15;margin-bottom:14px;max-width:820px}
+  .hero p.lead{font-size:17px;color:#D6EDE0;max-width:780px}
+  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
+  .kpi{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:var(--radius-lg);padding:22px}
+  .kpi .v{font-size:34px;font-weight:800;line-height:1.1}
+  .kpi .l{font-size:13px;color:#D6EDE0;margin-top:6px}
+  .kpi .s{font-size:12px;color:#A9D9BE;margin-top:8px}
+
+  h2{font-size:26px;color:var(--green-dark);margin-bottom:6px}
+  .section--green h2{color:#fff}
+  .kicker{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-weight:700;margin-bottom:6px}
+  .section--green .kicker{color:#A9D9BE}
+  .sub{color:var(--gray);max-width:780px;margin-bottom:28px}
+  h3{font-size:17px;color:var(--slate);margin:26px 0 10px}
+
+  .card{background:#fff;border:1px solid var(--gray-light);border-radius:var(--radius-lg);padding:22px;box-shadow:var(--shadow)}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .finding .n{width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+  .finding h4{font-size:16px;margin-bottom:6px;color:var(--green-dark)}
+  .finding p{font-size:14px;color:#3b4f43}
+
+  table{width:100%;border-collapse:collapse;background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);font-size:14px}
+  th{background:var(--green-dark);color:#fff;text-align:left;padding:11px 14px;font-size:12px;letter-spacing:.04em;text-transform:uppercase}
+  td{padding:11px 14px;border-bottom:1px solid var(--gray-light)}
+  tr:last-child td{border-bottom:none}
+  td.pos{color:var(--green);font-weight:700} td.neg{color:var(--red);font-weight:700} td.flat{color:var(--gray);font-weight:700}
+  .tablewrap{overflow-x:auto}
+  .src{font-size:12px;color:var(--gray);margin-top:8px}
+
+  .callout{border-radius:var(--radius);padding:16px 18px;margin:18px 0;border-left:5px solid var(--green);background:var(--green-pale);font-size:14px}
+  .callout strong{display:block;margin-bottom:4px}
+  .callout--amber{border-color:var(--amber);background:var(--amber-pale)}
+  .callout--red{border-color:var(--red);background:var(--red-pale)}
+  .callout--teal{border-color:var(--teal);background:var(--teal-pale)}
+
+  .legend{display:flex;gap:18px;font-size:13px;color:var(--gray);margin:6px 0 10px}
+  .legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+  .bar-row{display:grid;grid-template-columns:230px 1fr;gap:14px;align-items:center;margin:12px 0}
+  .bar-label{font-size:13px;font-weight:600;color:var(--slate)}
+  .bar-wrap{display:flex;flex-direction:column;gap:4px}
+  .bar{height:20px;border-radius:4px;display:flex;align-items:center;min-width:46px}
+  .bar span{font-size:12px;font-weight:700;padding-left:8px;color:#fff}
+  .bar-b{background:#9AA9A0} .bar-a{background:var(--green)}
+
+  .pill{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.06em;padding:3px 10px;border-radius:20px;margin-bottom:10px}
+  .p1{background:var(--red-pale);color:var(--red)} .p2{background:var(--amber-pale);color:var(--amber)} .p3{background:var(--teal-pale);color:var(--teal)}
+  .rec h4{font-size:16px;margin-bottom:6px;color:var(--green-dark)}
+  .rec p{font-size:14px;color:#3b4f43;margin-bottom:8px}
+  .rec .why{font-size:12.5px;color:var(--gray)}
+
+  .phases{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .phase{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:var(--radius-lg);padding:22px}
+  .phase h4{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#A9D9BE;margin-bottom:8px}
+  .phase li{margin:6px 0 6px 18px;font-size:14px}
+
+  .footer{background:var(--charcoal);color:#B7C7BE;padding:32px 0;font-size:13px}
+  .footer strong{color:#fff}
+
+  @media(max-width:860px){
+    .kpis,.grid3,.grid2,.phases{grid-template-columns:1fr}
+    .hero h1{font-size:28px}
+    .bar-row{grid-template-columns:1fr;gap:4px}
+    .header-sub{display:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="header-brand">
+      <div class="header-logo">DC</div>
+      <div><div class="header-title">Dis-Chem Pharmacies</div><div class="header-sub">Conversion Rate Optimisation Report · October 2026</div></div>
+    </div>
+    <div class="header-tag">CRO Report</div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow">CRO Report · 18 Aug – 21 Oct 2026</div>
+    <h1>The mobile checkout fix worked. The next gains are at the shipping step, in the cart and on the pages new traffic lands on.</h1>
+    <p class="lead">Mobile purchases per checkout starter rose about 3.5 points from the week of 23 Aug. Overall conversion stayed flat because much of the new traffic lands on pages that rarely convert. We have sized the biggest remaining opportunities and set out what to fix or test next.</p>
+    <div class="kpis">
+      <div class="kpi"><div class="v">35.6% → 39.1%</div><div class="l">Mobile purchase ÷ begin checkout (weekly)</div><div class="s">Step change in the week of 23 Aug, held through 17 Oct</div></div>
+      <div class="kpi"><div class="v">R0.01</div><div class="l">Revenue per session on Spring Savings, Paid Social visitors</div><div class="s">The page takes 40% of Paid Social sessions; the site average is R4.67</div></div>
+      <div class="kpi"><div class="v">46%</div><div class="l">Mobile users lost between shipping and payment</div><div class="s">The largest remaining loss inside checkout</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="kicker">Executive summary</div>
+    <h2>Three things to take into the room</h2>
+    <p class="sub">All figures come from Dis-Chem's GA4 property. “Before” is 14 Jun – 17 Aug 2026 and “after” is 18 Aug – 21 Oct 2026, 65 days each. The after window starts where the data of the last report ended. Weekly GA4 data puts the fix in the week of 23 Aug, five days later.</p>
+    <div class="grid3">
+      <div class="card finding"><div class="n">1</div><h4>The mobile checkout fix worked</h4><p>Mobile begin checkout → purchase is up +4.0 pts (36.9% to 40.9%), and the weekly data shows a lasting step from the week of 23 Aug, with shipping → payment rising from 50% to 54% (the shipping-step gain is on iPhone, while Android did not improve there). The gain holds on an equal 28-day comparison. Desktop is not confirmed.</p></div>
+      <div class="card finding"><div class="n">2</div><h4>Overall conversion is flat because of where new traffic lands</h4><p>Users to purchase is 0.59% against 0.61%. Cross-network, Direct and Organic Search improved +20%, +22% and +27% in revenue per session, but Paid Social sessions more than doubled and 40% of them land on one promotion page that earns R0.01 per session for them.</p></div>
+      <div class="card finding"><div class="n">3</div><h4>The next gains are at shipping, in the cart and in a few faults</h4><p>46% of mobile users who add shipping never reach payment, and in a sample of delivery-step sessions most stalled there. Clarity also shows a JavaScript error, mostly on iPhone browsers, in about 2% of sessions that rarely reach checkout. GA4 shows Android is now the weaker device at the shipping step (50.4% against 56.7% on iPhone). Each +1 point at the main steps is worth roughly R325K to R912K per 65 days.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--white">
+  <div class="container">
+    <div class="kicker">Fix verification</div>
+    <h2>What changed in checkout</h2>
+    <p class="sub">The same checkout steps, before and after, for mobile and desktop.</p>
+    <div class="legend"><span><i style="background:#9AA9A0"></i>Before (14 Jun – 17 Aug)</span><span><i style="background:#006B3C"></i>After (18 Aug – 21 Oct)</span></div>
+    <h3 style="margin-top:6px">Mobile</h3>
+    <div class="card"><div class="bar-row"><div class="bar-label">Begin checkout → add shipping</div><div class="bar-wrap"><div class="bar bar-b" style="width:69.8%"><span>69.8%</span></div><div class="bar bar-a" style="width:72.6%"><span>72.6%</span></div></div></div><div class="bar-row"><div class="bar-label">Add shipping → add payment</div><div class="bar-wrap"><div class="bar bar-b" style="width:50.7%"><span>50.7%</span></div><div class="bar bar-a" style="width:54.3%"><span>54.3%</span></div></div></div><div class="bar-row"><div class="bar-label">Add payment → purchase</div><div class="bar-wrap"><div class="bar bar-b" style="width:76.1%"><span>76.1%</span></div><div class="bar bar-a" style="width:90.8%"><span>90.8%</span></div></div></div><div class="bar-row"><div class="bar-label">Begin checkout → purchase</div><div class="bar-wrap"><div class="bar bar-b" style="width:26.9%"><span>26.9%</span></div><div class="bar bar-a" style="width:35.8%"><span>35.8%</span></div></div></div></div>
+    <h3>Desktop</h3>
+    <div class="card"><div class="bar-row"><div class="bar-label">Begin checkout → add shipping</div><div class="bar-wrap"><div class="bar bar-b" style="width:85.5%"><span>85.5%</span></div><div class="bar bar-a" style="width:81.1%"><span>81.1%</span></div></div></div><div class="bar-row"><div class="bar-label">Add shipping → add payment</div><div class="bar-wrap"><div class="bar bar-b" style="width:73.0%"><span>73.0%</span></div><div class="bar bar-a" style="width:70.8%"><span>70.8%</span></div></div></div><div class="bar-row"><div class="bar-label">Add payment → purchase</div><div class="bar-wrap"><div class="bar bar-b" style="width:74.0%"><span>74.0%</span></div><div class="bar bar-a" style="width:95.7%"><span>95.7%</span></div></div></div><div class="bar-row"><div class="bar-label">Begin checkout → purchase</div><div class="bar-wrap"><div class="bar bar-b" style="width:46.2%"><span>46.2%</span></div><div class="bar bar-a" style="width:54.9%"><span>54.9%</span></div></div></div></div>
+    <p class="src">Source: GA4 Checkout journey, device category, user counts. Mobile purchasers in this view went from 26,136 to 37,673 (+44%).</p>
+    <div class="callout"><strong>How to quote the improvement</strong>On the step-by-step view mobile begin checkout → purchase went from 26.9% to 35.8%. On the whole-journey view it went from 36.9% to 40.9%. The checkout journey counted 37,196 purchasers before against 43,754 on the purchase journey, and the two now agree (52,975 and 51,935). Part of the step-view jump is probably shipping and payment events now being recorded properly, so we recommend quoting the whole-journey figure.</div>
+    <div class="callout callout--amber"><strong>Desktop is not confirmed</strong>The step-by-step view shows a desktop payment gain, but on the whole-journey view desktop begin checkout → purchase fell from 62.3% to 58.1%. The two views disagree, so we do not claim a desktop improvement. Mobile is the only device where both views agree.</div>
+
+    <h3>Like-for-like check: equal 28-day windows</h3>
+    <p class="sub" style="margin-bottom:12px">Latest 28 days (24 Sep – 21 Oct) against the 28 days before the last report (20 Jul – 16 Aug). Mobile users grew +24.0% and mobile purchasers +12.5%.</p>
+    <div class="grid2">
+      <div><div class="tablewrap"><table><tr><th>Mobile</th><th>20 Jul – 16 Aug</th><th>24 Sep – 21 Oct</th><th>Change</th></tr><tr><td>Session start → view product</td><td>55.0%</td><td>48.3%</td><td class="neg">-6.7 pts</td></tr><tr><td>View product → add to cart</td><td>8.5%</td><td>7.7%</td><td class="neg">-0.8 pts</td></tr><tr><td>Add to cart → begin checkout</td><td>32.7%</td><td>32.3%</td><td class="neg">-0.4 pts</td></tr><tr><td>Begin checkout → purchase</td><td>36.7%</td><td>42.4%</td><td class="pos">+5.8 pts</td></tr><tr><td>Session start → purchase (overall)</td><td>0.56%</td><td>0.51%</td><td class="neg">-0.05 pts</td></tr></table></div></div>
+      <div><div class="tablewrap"><table><tr><th>Desktop</th><th>20 Jul – 16 Aug</th><th>24 Sep – 21 Oct</th><th>Change</th></tr><tr><td>Session start → view product</td><td>55.2%</td><td>53.7%</td><td class="neg">-1.5 pts</td></tr><tr><td>View product → add to cart</td><td>5.6%</td><td>6.2%</td><td class="pos">+0.6 pts</td></tr><tr><td>Add to cart → begin checkout</td><td>38.8%</td><td>42.8%</td><td class="pos">+4.1 pts</td></tr><tr><td>Begin checkout → purchase</td><td>63.9%</td><td>56.6%</td><td class="neg">-7.3 pts</td></tr><tr><td>Session start → purchase (overall)</td><td>0.77%</td><td>0.81%</td><td class="flat">+0.04 pts</td></tr></table></div></div>
+    </div>
+    <p class="src">Source: GA4 Purchase journey, device category, active users. The latest 28 days exclude the 25 Aug – 14 Sep promotion stretch but include the 4–10 Oct dip.</p>
+    <div class="callout"><strong>What the equal-length check shows</strong>Mobile begin checkout → purchase is up about 5.8 points, which confirms the fix. The share of mobile users who view a product fell about 6.7 points, and the share who buy overall slipped. The fix is working, and the cost of the weaker top of the funnel is eating into it.</div>
+  </div>
+</section>
+
+<section class="section section--white">
+  <div class="container">
+    <div class="kicker">When the fix took effect</div>
+    <h2>Weekly mobile checkout, 14 Jun – 17 Oct</h2>
+    <p class="sub">Both rates sit flat until the week of 23 Aug, step up together and then hold for eight weeks, which points to a fix going live that week rather than a promotion spike.</p>
+    <div class="legend"><span><i style="background:#006B3C"></i>Purchase ÷ begin checkout</span><span><i style="background:#9AA9A0"></i>Shipping → payment</span></div>
+    <div class="card"><svg viewBox="0 0 760 300" role="img" aria-label="Weekly mobile checkout rates" style="width:100%;height:auto"><line x1="46" x2="744" y1="256.0" y2="256.0" stroke="#E3E8E5"/><text x="40" y="260.0" text-anchor="end" font-size="11" fill="#5B6B62">30%</text><line x1="46" x2="744" y1="176.0" y2="176.0" stroke="#E3E8E5"/><text x="40" y="180.0" text-anchor="end" font-size="11" fill="#5B6B62">40%</text><line x1="46" x2="744" y1="96.0" y2="96.0" stroke="#E3E8E5"/><text x="40" y="100.0" text-anchor="end" font-size="11" fill="#5B6B62">50%</text><line x1="46" x2="744" y1="16.0" y2="16.0" stroke="#E3E8E5"/><text x="40" y="20.0" text-anchor="end" font-size="11" fill="#5B6B62">60%</text><line x1="456.6" x2="456.6" y1="16" y2="256" stroke="#B45309" stroke-dasharray="4 3"/><text x="461.6" y="26" font-size="11" fill="#B45309">Week of 23 Aug</text><polyline points="46.0,107.4 87.1,105.3 128.1,87.9 169.2,95.1 210.2,96.5 251.3,102.9 292.4,89.7 333.4,97.6 374.5,89.9 415.5,81.5 456.6,52.3 497.6,65.3 538.7,67.1 579.8,66.6 620.8,66.1 661.9,52.8 702.9,63.3 744.0,55.5" fill="none" stroke="#9AA9A0" stroke-width="2.5"/><circle cx="46.0" cy="107.4" r="3" fill="#9AA9A0"/><circle cx="87.1" cy="105.3" r="3" fill="#9AA9A0"/><circle cx="128.1" cy="87.9" r="3" fill="#9AA9A0"/><circle cx="169.2" cy="95.1" r="3" fill="#9AA9A0"/><circle cx="210.2" cy="96.5" r="3" fill="#9AA9A0"/><circle cx="251.3" cy="102.9" r="3" fill="#9AA9A0"/><circle cx="292.4" cy="89.7" r="3" fill="#9AA9A0"/><circle cx="333.4" cy="97.6" r="3" fill="#9AA9A0"/><circle cx="374.5" cy="89.9" r="3" fill="#9AA9A0"/><circle cx="415.5" cy="81.5" r="3" fill="#9AA9A0"/><circle cx="456.6" cy="52.3" r="3" fill="#9AA9A0"/><circle cx="497.6" cy="65.3" r="3" fill="#9AA9A0"/><circle cx="538.7" cy="67.1" r="3" fill="#9AA9A0"/><circle cx="579.8" cy="66.6" r="3" fill="#9AA9A0"/><circle cx="620.8" cy="66.1" r="3" fill="#9AA9A0"/><circle cx="661.9" cy="52.8" r="3" fill="#9AA9A0"/><circle cx="702.9" cy="63.3" r="3" fill="#9AA9A0"/><circle cx="744.0" cy="55.5" r="3" fill="#9AA9A0"/><polyline points="46.0,210.4 87.1,220.7 128.1,208.7 169.2,218.0 210.2,216.8 251.3,215.3 292.4,202.1 333.4,213.0 374.5,205.5 415.5,203.0 456.6,179.0 497.6,183.3 538.7,194.2 579.8,190.0 620.8,189.3 661.9,169.8 702.9,184.0 744.0,173.4" fill="none" stroke="#006B3C" stroke-width="2.5"/><circle cx="46.0" cy="210.4" r="3" fill="#006B3C"/><circle cx="87.1" cy="220.7" r="3" fill="#006B3C"/><circle cx="128.1" cy="208.7" r="3" fill="#006B3C"/><circle cx="169.2" cy="218.0" r="3" fill="#006B3C"/><circle cx="210.2" cy="216.8" r="3" fill="#006B3C"/><circle cx="251.3" cy="215.3" r="3" fill="#006B3C"/><circle cx="292.4" cy="202.1" r="3" fill="#006B3C"/><circle cx="333.4" cy="213.0" r="3" fill="#006B3C"/><circle cx="374.5" cy="205.5" r="3" fill="#006B3C"/><circle cx="415.5" cy="203.0" r="3" fill="#006B3C"/><circle cx="456.6" cy="179.0" r="3" fill="#006B3C"/><circle cx="497.6" cy="183.3" r="3" fill="#006B3C"/><circle cx="538.7" cy="194.2" r="3" fill="#006B3C"/><circle cx="579.8" cy="190.0" r="3" fill="#006B3C"/><circle cx="620.8" cy="189.3" r="3" fill="#006B3C"/><circle cx="661.9" cy="169.8" r="3" fill="#006B3C"/><circle cx="702.9" cy="184.0" r="3" fill="#006B3C"/><circle cx="744.0" cy="173.4" r="3" fill="#006B3C"/><text x="46.0" y="274" text-anchor="middle" font-size="11" fill="#5B6B62">14 Jun</text><text x="128.1" y="274" text-anchor="middle" font-size="11" fill="#5B6B62">28 Jun</text><text x="210.2" y="274" text-anchor="middle" font-size="11" fill="#5B6B62">12 Jul</text><text x="292.4" y="274" text-anchor="middle" font-size="11" fill="#5B6B62">26 Jul</text><text x="374.5" y="274" text-anchor="middle" font-size="11" fill="#5B6B62">9 Aug</text><text x="456.6" y="274" text-anchor="middle" font-size="11" fill="#5B6B62">23 Aug</text><text x="538.7" y="274" text-anchor="middle" font-size="11" fill="#5B6B62">6 Sep</text><text x="620.8" y="274" text-anchor="middle" font-size="11" fill="#5B6B62">20 Sep</text><text x="702.9" y="274" text-anchor="middle" font-size="11" fill="#5B6B62">4 Oct</text></svg></div>
+    <p class="src">Source: GA4 free-form exploration, mobile, weekly users per event (weeks start on Sunday; the partial week from 18 Oct is excluded). Averages: weeks of 14 Jun – 16 Aug against 23 Aug – 11 Oct.</p>
+    <div class="callout"><strong>Why this is not a promotion effect</strong>Purchases per checkout starter averaged 38.8% in the three promotion weeks and 39.3% in the five weeks after, and shipping → payment held its new level in both. A promotion would lift checkout completion only while it ran. Desktop did not show the gain, which a site-wide promotion would. We estimate the fix itself added about R3.1M over 23 Aug – 17 Oct (a range of R2.5M to R3.4M, or 5% to 6% of revenue), as set out in the Insight Report.</div>
+    <div class="callout callout--amber"><strong>Payment → purchase cannot be read from this view</strong>Add payment users and purchase users are almost identical every week, so <code>add_payment_info</code> appears to fire at about the same time as <code>purchase</code>. The 76% → 91% payment → purchase figure may therefore partly reflect event tracking. We use shipping → payment and purchase ÷ begin checkout as the reliable measures.</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="kicker">Where users are still lost</div>
+    <h2>Mobile funnel, after the fix</h2>
+    <p class="sub">77% of users are on mobile, so mobile losses carry most of the opportunity.</p>
+    <div class="tablewrap"><table>
+      <tr><th>Step</th><th>Users in</th><th>Users through</th><th>Users lost</th><th>Loss rate</th></tr>
+      <tr><td>Add to cart → begin checkout</td><td>272,577</td><td>90,736</td><td>181,841</td><td>66.7%</td></tr><tr><td>Begin checkout → add shipping</td><td>105,156</td><td>76,351</td><td>28,805</td><td>27.4%</td></tr><tr><td>Add shipping → add payment</td><td>76,351</td><td>41,481</td><td>34,870</td><td>45.7%</td></tr><tr><td>Add payment → purchase</td><td>41,481</td><td>37,673</td><td>3,808</td><td>9.2%</td></tr>
+    </table></div>
+    <p class="src">Source: GA4 Purchase journey (cart to begin checkout) and Checkout journey (the three checkout steps), mobile, 18 Aug – 21 Oct 2026. The cart step is much larger in absolute terms because far more users add to cart than start checkout.</p>
+    <h3 style="margin-top:24px">iPhone against Android</h3>
+    <p class="sub" style="margin-bottom:12px">GA4 open funnel exploration, mobile only, step-to-step completion rates, 18 Aug – 21 Oct 2026 against 14 Jun – 17 Aug 2026.</p>
+    <div class="tablewrap"><table>
+      <tr><th>Step</th><th>Android, before → after</th><th>iPhone, before → after</th></tr>
+      <tr><td>Add to cart → begin checkout</td><td>31.4% → 32.1%</td><td>31.9% → 31.4%</td></tr>
+      <tr><td>Begin checkout → add shipping</td><td>69.1% → 72.1%</td><td>70.7% → 71.7%</td></tr>
+      <tr><td>Add shipping → add payment</td><td>52.3% → 50.4%</td><td>50.2% → 56.7%</td></tr>
+      <tr><td>Add payment → purchase (least reliable)</td><td>77.9% → 97.6%</td><td>75.0% → 84.7%</td></tr>
+      <tr><td>Users who added to cart</td><td>154,171 → 161,222 (+4.6%)</td><td>135,815 → 163,983 (+20.7%)</td></tr>
+      <tr><td>Users who purchased</td><td>13,987 → 18,971 (+35.6%)</td><td>12,070 → 18,547 (+53.7%)</td></tr>
+      <tr><td>Purchasers per 100 users who added to cart</td><td>9.1 → 11.8</td><td>8.9 → 11.3</td></tr>
+    </table></div>
+    <p class="src">Source: GA4 funnel exploration with Make open funnel on, active users, Device category = mobile. Step counts differ from the other GA4 views in this report because the funnel counts users differently, so use the comparison between the two devices and the direction of change and not the absolute figures.</p>
+    <div class="callout callout--teal"><strong>What the device split shows</strong>Android and iPhone shoppers reach checkout at the same rate (about 32% of add-to-cart users begin checkout), so the cart step is not an iPhone problem. The shipping step is where they differ: iPhone improved from 50.2% to 56.7% while Android slipped from 52.3% to 50.4%, so Android is now about six points behind. Purchases per add-to-cart user rose on both (27% on iPhone, 30% on Android), so the fix helped both devices overall, but the shipping-step gain is on iPhone. The payment → purchase jump on Android (77.9% to 97.6%) looks like an event-tracking effect, in line with the caveat above.</div>
+
+    <div class="callout callout--amber"><strong>Why the cart step matters most</strong>181,841 mobile users added to cart but never began checkout. The previous report found the mobile cart losing its state during the login redirect. We have not re-tested that in this report, so the first task is to confirm whether it is still happening.</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="kicker">Landing pages</div>
+    <h2>Where visits start, and what they are worth</h2>
+    <p class="sub">All channels and devices, 18 Aug – 21 Oct 2026. Revenue is credited to the page the buying session started on, so this shows which entry points lead to sales.</p>
+    <div class="tablewrap"><table>
+      <tr><th>Landing page type</th><th>Sessions</th><th>Share of sessions</th><th>Add to carts per session</th><th>Revenue</th><th>Share of revenue</th><th>Revenue per session</th></tr>
+      <tr><td>Homepage</td><td>1,550,967</td><td>12.2%</td><td>0.46</td><td>R29.25M</td><td>49.3%</td><td>R18.86</td></tr><tr><td>Product pages</td><td>4,641,235</td><td>36.5%</td><td>0.07</td><td>R8.95M</td><td>15.1%</td><td>R1.93</td></tr><tr><td>Category pages</td><td>1,461,195</td><td>11.5%</td><td>0.12</td><td>R4.95M</td><td>8.3%</td><td>R3.39</td></tr><tr><td>Promotions</td><td>1,387,696</td><td>10.9%</td><td>0.08</td><td>R3.77M</td><td>6.3%</td><td>R2.71</td></tr><tr><td>Brand pages</td><td>879,272</td><td>6.9%</td><td>0.08</td><td>R1.36M</td><td>2.3%</td><td>R1.55</td></tr><tr><td>Health, clinic and content</td><td>811,942</td><td>6.4%</td><td>0.02</td><td>R526K</td><td>0.9%</td><td>R0.65</td></tr><tr><td>Site search results</td><td>718,412</td><td>5.6%</td><td>0.12</td><td>R2.02M</td><td>3.4%</td><td>R2.81</td></tr><tr><td>Rewards, login and app</td><td>242,331</td><td>1.9%</td><td>0.37</td><td>R3.81M</td><td>6.4%</td><td>R15.73</td></tr><tr><td>Cart and checkout</td><td>46,040</td><td>0.4%</td><td>1.02</td><td>R3.23M</td><td>5.4%</td><td>R70.09</td></tr><tr><td>Other</td><td>676,757</td><td>5.3%</td><td>0.11</td><td>R1.51M</td><td>2.5%</td><td>R2.23</td></tr><tr><td>Not set</td><td>304,895</td><td>2.4%</td><td>0.00</td><td>R2K</td><td>0.0%</td><td>R0.01</td></tr>
+    </table></div>
+    <p class="src">Source: GA4 free-form exploration, landing page by sessions, add to carts and purchase revenue, about 59,000 pages grouped by type from their URL. Site average is R4.67 per session (the Insight Report shows R4.73 from the channel export, which counts sessions slightly differently). Session counts by landing page add up to slightly more than GA4's overall total, so treat shares as approximate.</p>
+    <div class="grid2" style="margin-top:16px">
+      <div class="callout"><strong>The homepage carries the site</strong>It starts 12% of sessions but earns 49% of revenue, at R18.86 per session against R4.67 for the site. Product pages start 36% of sessions but earn 15% of revenue (R1.93 per session). Visitors who arrive deeper in the site are far less likely to buy, which is consistent with the fall in homepage banner views reported in the Insight Report.</div>
+      <div class="callout callout--amber"><strong>Same section, very different results</strong>The Beauty Edit promotion page has 63,781 sessions, a 62% add-to-cart rate and R23.85 per session. Spring Savings has 602,382 sessions, a 1.2% add-to-cart rate and R0.13 per session, and 95% of its visitors come from Paid Social. Part of the gap is traffic type, but it shows what a promotion page can do, and Beauty Edit is the model to test against.</div>
+    </div>
+
+    <h3>High-traffic pages that earn very little</h3>
+    <p class="sub" style="margin-bottom:12px">Pages with more than 40,000 sessions and under about R1.50 per session, excluding noise pages. The last column shows what an extra R1 per session would be worth over 65 days.</p>
+    <div class="tablewrap"><table>
+      <tr><th>Landing page</th><th>Sessions</th><th>Add to carts per session</th><th>Engagement rate</th><th>Revenue per session</th><th>Value of +R1 per session</th></tr>
+      <tr><td>Spring savings promotion<br><span style="color:#5B6B62;font-size:12px">/promotions/spring-savings</span></td><td>602,382</td><td>0.012</td><td>82%</td><td>R0.13</td><td class="pos">R602K</td></tr><tr><td>Health hubs<br><span style="color:#5B6B62;font-size:12px">/health-hubs</span></td><td>525,696</td><td>0.007</td><td>23%</td><td>R0.15</td><td class="pos">R526K</td></tr><tr><td>Woods G Formula 50ml (product)<br><span style="color:#5B6B62;font-size:12px">/woods-g-formula-50ml-655</span></td><td>237,604</td><td>0.004</td><td>74%</td><td>R0.04</td><td class="pos">R238K</td></tr><tr><td>Personal care category<br><span style="color:#5B6B62;font-size:12px">/shop-by-department/personal-care</span></td><td>116,134</td><td>0.017</td><td>88%</td><td>R0.22</td><td class="pos">R116K</td></tr><tr><td>Berocca brand page<br><span style="color:#5B6B62;font-size:12px">/shop-by-department/brands/brands-b/berocca</span></td><td>69,852</td><td>0.002</td><td>71%</td><td>R0.02</td><td class="pos">R70K</td></tr><tr><td>La Roche-Posay Anthelios (product)<br><span style="color:#5B6B62;font-size:12px">/la-roche-anthelios-uvmune-anti-dark-spot-spf50-355</span></td><td>79,074</td><td>0.039</td><td>80%</td><td>R0.43</td><td class="pos">R79K</td></tr><tr><td>Cetaphil featured brand page<br><span style="color:#5B6B62;font-size:12px">/featured-brands/personal-care/cetaphil</span></td><td>44,686</td><td>0.023</td><td>34%</td><td>R0.42</td><td class="pos">R45K</td></tr><tr><td>Huggies Gold size 5 (product)<br><span style="color:#5B6B62;font-size:12px">/huggies-gold-skin-soft-pants-sz-5-50-s-384</span></td><td>40,633</td><td>0.005</td><td>61%</td><td>R0.04</td><td class="pos">R41K</td></tr>
+    </table></div>
+    <p class="src">Source: GA4 free-form exploration, 18 Aug – 21 Oct 2026. The values in the last column are illustrative sensitivities, not forecasts.</p>
+
+    <h3>Where Paid Social lands</h3>
+    <p class="sub" style="margin-bottom:12px">Landing pages for sessions from the Paid Social channel, 18 Aug – 21 Oct 2026: 1,419,849 sessions and R314K of revenue, or R0.22 per session against R4.67 for the whole site.</p>
+    <div class="grid2">
+      <div><div class="tablewrap"><table>
+        <tr><th>Landing page type</th><th>Sessions</th><th>Share of Paid Social</th><th>Add to carts per session</th><th>Revenue per session</th></tr>
+        <tr><td>Promotions</td><td>731,895</td><td>51.5%</td><td>0.005</td><td>R0.03</td></tr><tr><td>Product pages</td><td>399,178</td><td>28.1%</td><td>0.019</td><td>R0.09</td></tr><tr><td>Brand pages</td><td>156,693</td><td>11.0%</td><td>0.021</td><td>R0.10</td></tr><tr><td>Site search results</td><td>55,302</td><td>3.9%</td><td>0.015</td><td>R0.21</td></tr><tr><td>Category pages</td><td>25,652</td><td>1.8%</td><td>0.021</td><td>R0.71</td></tr><tr><td>Homepage</td><td>16,784</td><td>1.2%</td><td>0.247</td><td>R9.87</td></tr>
+      </table></div></div>
+      <div><div class="tablewrap"><table>
+        <tr><th>Largest landing pages</th><th>Sessions</th><th>Share of Paid Social</th><th>Paid Social share of the page</th><th>Add to carts per session</th><th>Revenue per session</th></tr>
+        <tr><td>Spring savings promotion<br><span style="color:#5B6B62;font-size:12px">/promotions/spring-savings</span></td><td>570,375</td><td>40.2%</td><td>95%</td><td>0.003</td><td>R0.01</td></tr><tr><td>Better deals, better savings promotion<br><span style="color:#5B6B62;font-size:12px">/promotions/better-deals-better-savings</span></td><td>100,667</td><td>7.1%</td><td>69%</td><td>0.016</td><td>R0.11</td></tr><tr><td>Site search results<br><span style="color:#5B6B62;font-size:12px">/catalogsearch/result</span></td><td>55,237</td><td>3.9%</td><td>8%</td><td>0.015</td><td>R0.19</td></tr><tr><td>2 for 1 sports supplements promotion<br><span style="color:#5B6B62;font-size:12px">/promotions/2-1-sports-supplements</span></td><td>45,795</td><td>3.2%</td><td>20%</td><td>0.001</td><td>R0.00</td></tr><tr><td>Huggies Gold size 5 (product)<br><span style="color:#5B6B62;font-size:12px">/huggies-gold-skin-soft-pants-sz-5-50-s-384</span></td><td>38,846</td><td>2.7%</td><td>96%</td><td>0.000</td><td>R0.00</td></tr><tr><td>E-Pap 500g (product)<br><span style="color:#5B6B62;font-size:12px">/e-pap-500g-kosher-072</span></td><td>30,176</td><td>2.1%</td><td>87%</td><td>0.001</td><td>R0.00</td></tr><tr><td>Cetaphil featured brand page<br><span style="color:#5B6B62;font-size:12px">/featured-brands/personal-care/cetaphil</span></td><td>28,840</td><td>2.0%</td><td>65%</td><td>0.004</td><td>R0.00</td></tr><tr><td>CeraVe Blemish Control cleanser (product)<br><span style="color:#5B6B62;font-size:12px">/cerave-blemish-control-cleanser-236ml-213</span></td><td>26,393</td><td>1.9%</td><td>92%</td><td>0.005</td><td>R0.00</td></tr>
+      </table></div></div>
+    </div>
+    <p class="src">Source: GA4 free-form exploration filtered to the Paid Social channel, landing page, 18 Aug – 21 Oct 2026. Revenue is last-click within the session, so it understates social's role earlier in the journey.</p>
+    <div class="callout callout--red"><strong>One page takes 40% of Paid Social traffic and almost none of it buys</strong>Spring Savings gets 95% of its sessions from Paid Social, an add-to-cart rate of 0.3% and R0.01 per session. Promotion pages as a group take 52% of Paid Social sessions and product pages 28%, while only 1.2% land on the homepage, where Paid Social visitors earn R9.87 per session. Several single product pages, such as Huggies, E-Pap and CeraVe, receive tens of thousands of Paid Social sessions with almost no add to carts and no revenue. This is a page-experience question to test, and it helps explain why the site average did not move even though checkout improved.</div>
+
+    <h3>Entry points that already work</h3>
+    <div class="tablewrap"><table>
+      <tr><th>Landing page</th><th>Sessions</th><th>Add to carts per session</th><th>Revenue per session</th></tr>
+      <tr><td>/promotions/beauty-edit</td><td>63,781</td><td>0.62</td><td>R23.85</td></tr><tr><td>/better-rewards</td><td>160,582</td><td>0.38</td><td>R9.51</td></tr><tr><td>/vascamen-ultra-30-caps-966</td><td>126,714</td><td>0.46</td><td>R9.64</td></tr><tr><td>/shop-by-department</td><td>69,655</td><td>0.34</td><td>R13.27</td></tr><tr><td>/on-promotion</td><td>42,491</td><td>0.33</td><td>R8.15</td></tr><tr><td>/promotions/fragrance-sale</td><td>28,592</td><td>0.19</td><td>R10.65</td></tr>
+    </table></div>
+    <p class="src">Pages with at least 20,000 sessions that earn well above the site average. Carts and the rewards and login redirect also perform strongly: about 46,040 sessions start on the cart at R70 per session, which looks like returning shoppers resuming a basket.</p>
+
+    <div class="grid2" style="margin-top:16px">
+      <div class="callout callout--teal"><strong>Health Hubs is not Paid Social</strong>Health Hubs has 525,696 sessions, 23% engagement and R0.15 per session, but it is not among the Paid Social landing pages. Clarity points to an advertising network as the source (see the Clarity section below), which still needs confirming.</div>
+      <div class="callout callout--amber"><strong>Possible noise in the data</strong>304,895 sessions have no landing page and 59,335 land on <code>/sotf/idle</code>, together 2.9% of sessions, with very low engagement. This may be tracking or non-human traffic. It should be checked and, if confirmed, excluded from conversion rates. 718,412 sessions (5.6%) also start on site search results, which suggests some campaigns or listings land on search pages. That is worth confirming.</div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="kicker">Behaviour and technical signals</div>
+    <h2>What Microsoft Clarity shows</h2>
+    <p class="sub">Clarity dashboard for 18 Aug – 21 Oct 2026, all devices unless stated. These are aggregate signals, so they point to where to look and do not yet show why users leave. The sample of delivery-step sessions further down is our first look at individual sessions.</p>
+    <div class="tablewrap"><table>
+      <tr><th>Signal</th><th>Value</th><th>Why it matters</th></tr>
+      <tr><td>Quick backs</td><td>12.9% of sessions (1.68M)</td><td>One in eight sessions returns to the previous page almost straight away, which is what a landing page that does not match the visitor's intent looks like.</td></tr>
+      <tr><td>Dead clicks</td><td>2.4% of sessions (308K)</td><td>Taps on things that do nothing. Worth checking on the cart, delivery and promotion pages.</td></tr>
+      <tr><td>Rage clicks</td><td>0.03% of sessions (3.9K)</td><td>Low, so there is no sign of widespread frustration with a single broken control.</td></tr>
+      <tr><td>Page speed</td><td>Largest paint 3.65s, interaction delay 384ms</td><td>Both miss the thresholds Google rates as good (2.5s and 200ms). On mobile this slows the cart and checkout pages.</td></tr>
+      <tr><td>JavaScript errors</td><td>20.9M error occurrences</td><td>85% are one generic, unreadable error (<code>[object Object]</code>). About 562K are binding errors on <code>setAjaxModelElement</code> and 212K are <code>flexslider</code> carousel errors. These are occurrences, not sessions. The full list for the developers is below.</td></tr>
+      <tr><td>Bot sessions</td><td>2.46M flagged as bots, alongside 13.0M counted sessions</td><td>If GA4 counts bot traffic too, conversion rates are understated, and so is every per-session figure in this report.</td></tr>
+      <tr><td>Social in-app browsers</td><td>Facebook and Instagram, 841K sessions (6.5%)</td><td>In-app browsers often behave differently from Chrome and Safari for logins, payments and saved carts.</td></tr>
+      <tr><td>Login redirect</td><td>348K sessions on the single sign-on redirect page; 315K arrive from the login domain</td><td>The cart and login journey is heavily used, so any fault there affects a large number of shoppers.</td></tr>
+      <tr><td>Purchase tracking</td><td>Purchase event 59.6K sessions, Order success event 45.1K</td><td>The two Clarity events for the same outcome differ by about a third, which backs up the tracking caveat in the checkout section.</td></tr>
+    </table></div>
+    <p class="src">Source: Microsoft Clarity dashboard export, 18 Aug – 21 Oct 2026 (13.0M sessions counted, 2.46M bot sessions flagged). Performance figures are Clarity's averages. The page address for the delivery step is <code>/wizard/delivery/</code>, which is the page to filter recordings by.</p>
+    <div class="grid2" style="margin-top:16px">
+      <div class="callout callout--amber"><strong>Health Hubs traffic matches an ad network</strong>Health Hubs received 386,306 sessions in Clarity, and 386,319 sessions were referred by <code>pangleglobal.com</code>, an advertising network. The match is almost exact, so the traffic very likely comes from that network. It has low engagement (23%) and almost no revenue. This needs confirming with the paid team, and it is worth asking whether that traffic is real shoppers.</div>
+      <h3 style="margin-top:24px">JavaScript errors for the developers</h3>
+      <p class="sub" style="margin-bottom:12px">The errors Clarity recorded for 18 Aug – 21 Oct 2026, from its JavaScript errors export (20.9M occurrences in total). The five below make up about 90% of them.</p>
+      <div class="tablewrap"><table>
+        <tr><th>Error as Clarity reports it</th><th>Occurrences</th><th>Share of all errors</th><th>What it points to</th></tr>
+        <tr><td><code>[object Object]</code></td><td>17.83M</td><td>85.2%</td><td>An error thrown or logged without a readable message, so it cannot be diagnosed from the export alone. It fires across the whole site (see the table below) and does not appear to stop purchases, so it needs tracing and clearing but is unlikely to be the main cause of checkout loss.</td></tr>
+        <tr><td><code>Script error.</code></td><td>314.6K</td><td>1.5%</td><td>The browser hides the detail when an error comes from a script loaded from another domain, such as a third-party tag. Worth checking which external scripts load on the cart and checkout pages.</td></tr>
+        <tr><td>Knockout binding error: <code>unable to process binding "afterrender: function(){return setAjaxModelElement}"</code>, in two variants (one ends “can't find…”; the export cuts the message off)</td><td>295.5K and 266.3K (561.8K together)</td><td>2.7%</td><td>A page component calls <code>setAjaxModelElement</code> after it renders and the call fails. The “can't find…” wording is how Safari on iPhone reports a missing function or variable. Sessions with this error are mostly iPhone Safari and far less often begin checkout or purchase (see below). This is the first error to fix.</td></tr>
+        <tr><td><code>$(...).flexslider is not a function</code></td><td>212.1K</td><td>1.0%</td><td>The carousel script runs when the flexslider plugin has not loaded. This is a script loading or ordering fault. In the sessions with the binding error the same fault also appears for the fotorama gallery and the brands carousel (32K and 30K occurrences), which suggests a shared cause such as a script that failed to load.</td></tr>
+        <tr><td><code>checkOnlyInts</code>, reported as “can't find variable: checkonlyints” (Safari wording) and “checkonlyints is not defined” (Chrome wording)</td><td>201.8K and 136.1K (337.9K together)</td><td>1.6%</td><td>A function is missing when the cart page runs. It fires on the cart (see below) and is the cart-update fault seen in a recording. It does not stop checkout, but it is a repeatable fault on the page that matters most.</td></tr>
+      </table></div>
+      <h3 style="margin-top:24px">The <code>setAjaxModelElement</code> binding error: who it affects</h3>
+      <p class="sub" style="margin-bottom:12px">Clarity dashboard filtered to sessions with the “can't find…” binding error alone, 18 Aug – 21 Oct 2026. That is 261,036 sessions, about 2.0% of the 13.04M, and it holds all 266.3K occurrences of that error.</p>
+      <div class="tablewrap"><table>
+        <tr><th>Measure</th><th>Sessions with the error</th><th>All sessions</th></tr>
+        <tr><td>Browser: MobileSafari</td><td>68.2%</td><td>33.9%</td></tr>
+        <tr><td>Browser: Google app (also runs on Apple's browser engine on iPhone)</td><td>14.2%</td><td>5.4%</td></tr>
+        <tr><td>Browser: ChromeMobile</td><td>12.9%</td><td>37.7%</td></tr>
+        <tr><td>Added to cart</td><td>3.83%</td><td>4.19%</td></tr>
+        <tr><td>Began checkout (Clarity smart event)</td><td>0.02% (58)</td><td>0.26% (34,012)</td></tr>
+        <tr><td>Sessions with a purchase</td><td>0.09% (237)</td><td>0.35% (45,069)</td></tr>
+        <tr><td>Pages per session, active time</td><td>3.37 pages, 25s</td><td>2.00 pages, 57s</td></tr>
+      </table></div>
+      <p class="src">Source: Microsoft Clarity dashboard exports, with and without the JavaScript error filter. The pages these sessions visit are mostly browse pages: the homepage (24.6K), the cart (14.3K, about 2% of cart sessions), On Promotion (8.8K), Stores (5.6K), Spring Savings (5.4K) and La Roche-Posay (5.4K). The delivery step is not among the top twelve. The same pattern appeared when the filter also required the <code>[object Object]</code> error (221,498 sessions, 68.5% MobileSafari, 0.05% with a purchase).</p>
+      <div class="callout callout--amber"><strong>A fault linked to fewer purchases, but not an iPhone-wide problem</strong>Sessions with this error add to cart at close to the normal rate (3.8% against 4.2%), yet far fewer begin checkout (0.02% against 0.26%) or buy (0.09% against 0.35%), and they are mostly on iPhone browsers. GA4 does not show iPhone shoppers doing worse at the cart step overall, though: 31.4% of iPhone add-to-cart users begin checkout against 32.1% on Android (table in the “Where users are still lost” section). The affected sessions are about 2% of all sessions, so this is a contained fault and not the main reason carts do not reach checkout. This is a correlation and not proof. The error may be a symptom, these are short browsing sessions, and Clarity's own checkout and purchase events may be missed when scripts fail, which would make the gap look larger than it is. If these shoppers had bought at the site rate, there would have been roughly 650 more purchases in 65 days (an upper bound, since browse-heavy sessions convert less). It is still worth fixing first because it is a specific, cheap fault.</div>
+
+      <h3 style="margin-top:24px">The cart update error: <code>checkOnlyInts</code></h3>
+      <p class="sub" style="margin-bottom:12px">Clarity dashboard filtered to sessions with either wording of the error, as a JavaScript error or a click error, 18 Aug – 21 Oct 2026: 107,815 sessions, about 0.8% of the 13.04M.</p>
+      <div class="tablewrap"><table>
+        <tr><th>Measure</th><th>Sessions with the error</th><th>All sessions</th></tr>
+        <tr><td>Top pages</td><td>Cart 43.5K and 8.9K, search results 5.5K</td><td>Cart 643.6K</td></tr>
+        <tr><td>Share of cart-page sessions with the error</td><td colspan="2">About 7% (43.5K of 643.6K)</td></tr>
+        <tr><td>Browser: MobileSafari, ChromeMobile, Chrome</td><td>47.5%, 25.3%, 10.3%</td><td>33.9%, 37.7%, 8.8%</td></tr>
+        <tr><td>Pages per session</td><td>6.96</td><td>2.00</td></tr>
+        <tr><td>Dead clicks</td><td>7.10%</td><td>2.36%</td></tr>
+        <tr><td>Interaction delay (INP)</td><td>528ms</td><td>384ms</td></tr>
+        <tr><td>Sessions with a purchase</td><td>5.52% (5,938)</td><td>0.35% (45,069)</td></tr>
+      </table></div>
+      <p class="src">Source: Microsoft Clarity dashboard exports, with and without the JavaScript error filter. These are long cart sessions that began checkout (4,441 sessions) and often bought, so the 5.5% purchase rate should not be compared with the site-wide 0.35%. The comparison that matters is dead clicks and interaction delay, which are well above the site average.</p>
+      <div class="callout"><strong>A cart fault that does not block buying</strong>Shoppers who hit this error are engaged, and 5.5% still bought, so it is not what stops most carts reaching checkout. But their sessions show three times the dead clicks (7.1% against 2.4%) and a slower interaction delay, which fits cart controls that do not respond when tapped. It affects about one cart session in 15 and is a clear fix. Clarity also records a tracking error in checkout (<code>undefined is not an object (evaluating 'trackcheckout.step.tostring')</code>, 3.5K occurrences) that is worth including in the event audit.</div>
+
+      <h3 style="margin-top:24px">Where <code>[object Object]</code> fires</h3>
+      <p class="sub" style="margin-bottom:12px">Clarity dashboard filtered to sessions with this error, 18 Aug – 21 Oct 2026: 9.06M of 13.04M sessions (69.5%) have it.</p>
+      <div class="tablewrap"><table>
+        <tr><th>Page</th><th>Sessions with the error</th><th>Share of the page's sessions</th></tr>
+        <tr><td>Delivery step <code>/wizard/delivery/</code></td><td>296,388</td><td>86%</td></tr>
+        <tr><td>Customer account <code>/customer/account/</code></td><td>203,152</td><td>85%</td></tr>
+        <tr><td>Login redirect <code>/sso/redirect/index/</code></td><td>286,678</td><td>82%</td></tr>
+        <tr><td>Search results <code>/catalogsearch/result/</code></td><td>1,900,257</td><td>81%</td></tr>
+        <tr><td>Spring Savings</td><td>396,872</td><td>70%</td></tr>
+        <tr><td>Homepage</td><td>951,408</td><td>68%</td></tr>
+        <tr><td>Cart <code>/checkout/cart/</code></td><td>Below 104K (not in the filtered top 12 pages)</td><td>Under about 16%</td></tr>
+      </table></div>
+      <p class="src">Source: Microsoft Clarity dashboard exports, with and without the JavaScript error filter. The error is spread across browsers (61% to 79% of sessions in each of the four largest) and is present in 82% of sessions with a purchase (36,805 of 45,069), so it does not block buying. About 85% of the sessions Clarity flags as bots also raise it, so part of the volume may not be shoppers. Sessions with the error also load slower (largest paint 4.02s against 3.65s overall), which may only reflect that they view more pages.</p>
+      <div class="callout"><strong>Note for the developers</strong>These are specific, repeatable faults, so they can be fixed without waiting for tests. Clarity's export shows the error text and totals only. To see which pages and devices each error fires on, open Clarity's JavaScript errors view, click an error and filter its sessions by page, browser and device. Its recordings show what the shopper was doing when it fired. We suggest starting with the <code>setAjaxModelElement</code> binding error, then the cart error, then the carousel errors, and then tracing <code>[object Object]</code>. The last is the biggest by volume, but it appears on almost every page and purchases still complete, so clearing it mainly makes the error report readable and may reveal other faults hidden behind it. Because most shoppers are on mobile, fixing these is also one of the cheapest ways to improve reliability.</div>
+    </div>
+
+    <h3>A sample of 300 mobile delivery-step sessions</h3>
+    <p class="sub" style="margin-bottom:12px">The 300 most recent mobile sessions that visited the delivery step (<code>/wizard/delivery/</code>), from about 20:50 to 23:58 on 21 Oct. It is a small, late-evening sample, so read it as direction and not as a rate. Clarity recorded 140,451 mobile sessions on this page in the whole period.</p>
+    <div class="tablewrap"><table>
+      <tr><th>What the 300 sessions did</th><th>Sessions</th><th>Share</th></tr>
+      <tr><td>Session ended on the delivery step</td><td>175</td><td>58%</td></tr>
+      <tr><td>Went back to the cart</td><td>49</td><td>16%</td></tr>
+      <tr><td>Reached the checkout page</td><td>8</td><td>3%</td></tr>
+      <tr><td>Reached the payment redirect or the order success page</td><td>4</td><td>1.3%</td></tr>
+      <tr><td>Left for search, product or other pages</td><td>64</td><td>21%</td></tr>
+      <tr><td>Stayed 30 seconds or less</td><td>108</td><td>36%</td></tr>
+      <tr><td>Single-page sessions</td><td>91</td><td>30%</td></tr>
+      <tr><td>Users who appear in more than one session within the three hours</td><td>44 of 242 users</td><td>18%</td></tr>
+    </table></div>
+    <p class="src">Source: Microsoft Clarity recordings export (last 300 sessions, Device: Mobile, URL is exactly the delivery step), 21 Oct 2026. A session that ends on the delivery page may continue later in a new session, so the first row is an upper bound on abandonment.</p>
+    <div class="grid2" style="margin-top:16px">
+      <div class="callout callout--amber"><strong>Most sessions stall before checkout</strong>Only about 4% of these sessions got as far as the checkout page, the payment redirect or the order success page, and 44 users came back for a second to fifth attempt within three hours. People are trying to continue and not getting through. This is consistent with the shipping step being our largest remaining loss.</div>
+      <div class="callout"><strong>Clarity's summary of the recordings</strong>Clarity's AI summary of the same sample points to three things: repeated JavaScript errors during browsing and checkout, clicks on the store selection prompt ("Please make your selection") that do not progress on the Collect in Store option, and a few payment declines or dead clicks late in the flow. These are leads to confirm by watching the recordings, not findings.</div>
+    </div>
+        <div class="callout callout--teal"><strong>What five individual sessions add</strong>Clarity's summaries of five long mobile sessions (a small, anecdotal set) add three leads. First, updating the cart repeatedly triggered a JavaScript error (<code>checkOnlyInts is not defined</code>) in one session, and errors also appeared as another shopper moved between product pages and the delivery step. Second, shoppers move back and forth between shopping and the delivery step, adding items, removing items and logging in part-way through. Some of the losses we count at the shipping step may be shoppers carrying on shopping, so a clearer way to keep the basket and delivery choice while browsing is worth testing. Third, one shopper tried to check out with Collect in Store and Capitec payment, then left to browse, which fits the store selection and payment issues in the Clarity summary. All three need more recordings to confirm.</div>
+<div class="callout callout--teal"><strong>The iPhone skew is the sample, not the funnel</strong>84% of the sampled sessions were on iOS and 65% on Safari, against 34% for Safari across all Clarity sessions. GA4 shows iPhone and Android shoppers reach the shipping step in almost equal numbers (53.9K and 53.5K users), so Android shoppers are not dropping out earlier. The skew most likely comes from the late-evening sample, and the sample should be read as direction only.</div>
+  </div>
+</section>
+
+<section class="section section--white">
+  <div class="container">
+    <div class="kicker">Opportunity sizing</div>
+    <h2>What each lever is worth</h2>
+    <p class="sub">Each row shows what +1 percentage point at that step is worth, and a realistic target. All figures use the after-window volumes and hold downstream conversion rates constant.</p>
+    <div class="tablewrap"><table>
+      <tr><th>Lever</th><th>Per +1 pt<br>(purchasers / revenue, 65 days)</th><th>Scenario</th><th>Extra purchasers</th><th>Extra revenue, 65 days</th><th>Extra revenue, per month</th></tr>
+      <tr><td>Mobile shipping → payment</td><td>693 / R543K</td><td>+5 pts (54.3% → 59.3%)</td><td>3,467</td><td class="pos">R2.71M</td><td class="pos">R1.25M</td></tr><tr><td>Mobile add to cart → begin checkout</td><td>1,114 / R872K</td><td>+3 pts (33.3% → 36.3%)</td><td>3,343</td><td class="pos">R2.62M</td><td class="pos">R1.21M</td></tr><tr><td>Users who view a product (all devices)</td><td>1,051 / R912K</td><td>back to 54.6% (+5.2 pts)</td><td>5,456</td><td class="pos">R4.74M</td><td class="pos">R2.19M</td></tr><tr><td>Mobile payment → purchase</td><td>415 / R325K</td><td>to desktop level (+4.9 pts)</td><td>2,029</td><td class="pos">R1.59M</td><td class="pos">R733K</td></tr>
+    </table></div>
+    <p class="src">Revenue uses true order value from GA4 transactions: R783 per order on mobile and R868 across all devices, weekly averages after 23 Aug. The levers act at different steps and are not simply additive. Scenario targets are illustrative, not forecasts.</p>
+    <div class="callout callout--teal"><strong>Product-view rate</strong>The share of users who view a product fell from 54.6% to 49.4% (5.2 pts). The sizing assumes the traffic mix returns to the previous behaviour, which the Insight Report suggests may not be fully in our control.</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="kicker">This month</div>
+    <h2>Four actions for the next four weeks</h2>
+    <p class="sub">We kept this month's list short so it can be finished before the November report. “Fix” is a change to make, “Look at” is an analysis to run, and “Confirm” is something to verify before we rely on the numbers. Owners are suggestions for discussion.</p>
+    <div class="tablewrap"><table>
+      <tr><th>Action</th><th>Type</th><th>Why it matters</th><th>Suggested owner</th></tr>
+      <tr><td>Fix the JavaScript errors (<code>setAjaxModelElement</code> binding errors first, <code>checkOnlyInts is not defined</code>, the <code>flexslider</code> error, and tracing the unreadable <code>[object Object]</code> error that makes up 85% of all errors, which fires sitewide; the full list is in the Clarity section), and mask login tokens in Clarity recordings</td><td><span class="pill p1" style="margin:0">Fix</span></td><td>Specific, repeatable faults, with no need to wait for tests. The <code>setAjaxModelElement</code> error is the first to fix: sessions that hit it are mostly iPhone Safari and buy less often. The login redirect address also carries a token with customer details, which Clarity's masking settings can hide.</td><td>Dis-Chem dev team</td></tr>
+      <tr><td>Audit the shipping, payment and purchase events in GA4 and Clarity</td><td><span class="pill p3" style="margin:0">Confirm</span></td><td>The two checkout views disagree and add payment and purchase fire together, so the size of the gain is uncertain until the events are confirmed. This is also tracked in the Insight Report. Clarity also records a checkout tracking error (<code>trackcheckout.step.tostring</code>, 3.5K occurrences) that should be part of the audit.</td><td>Algorithm with Dis-Chem dev team</td></tr>
+      <tr><td>Watch the mobile delivery-step and cart recordings (starting with Collect in Store), and re-test the cart and login journey</td><td><span class="pill p2" style="margin:0">Look at</span></td><td>The shipping step loses 46% of mobile users and the cart step loses 67%. This turns our hypotheses into evidence and decides which fix to build first. Start with Android, where shipping → payment is weakest.</td><td>Algorithm</td></tr>
+      <tr><td>Test a product-led layout on Spring Savings, modelled on Beauty Edit</td><td><span class="pill p1" style="margin:0">Fix</span></td><td>It takes about 40% of Paid Social sessions and earns about R0.01 per session from them. Check the single product pages that receive tens of thousands of Paid Social sessions for stock, price and ad match at the same time.</td><td>Algorithm with Dis-Chem team</td></tr>
+    </table></div>
+    <p class="src">Sizing for the shipping and cart levers is in the section above. The evidence for each action is in the sections earlier in this report.</p>
+
+    <h3 style="margin-top:28px">Lined up for after Black Friday</h3>
+    <div class="tablewrap"><table>
+      <tr><th>Item</th><th>Why it waits</th></tr>
+      <tr><td>Design and test fixes for the mobile shipping step, starting with Android and including the Collect in Store selection</td><td>Needs the recordings and the event audit first, and it is better tested on a clean baseline.</td></tr>
+      <tr><td>Fix the mobile cart → checkout step and test an earlier route to checkout</td><td>Needs the cart and login re-test first.</td></tr>
+      <tr><td>Homepage and banner routing test, and the remaining mobile payment gap (91% against 95.7% on desktop)</td><td>Smaller gains, and the payment figure is the least reliable number until the events are audited.</td></tr>
+      <tr><td>Mobile page speed (largest paint 3.65s, interaction delay 384ms) and the desktop drop in begin checkout → purchase (63.9% to 56.6% on the equal 28-day check)</td><td>Both need investigation before we know what to change.</td></tr>
+      <tr><td>Traffic quality: Health Hubs source (it matches the Pangle ad network count), sessions with no landing page, <code>/sotf/idle</code>, bot sessions</td><td>Needs the paid team. The 2.46M flagged bot sessions would distort every conversion rate if they are not real shoppers.</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<section class="section section--green">
+  <div class="container">
+    <div class="kicker">Monitoring</div>
+    <h2>What we will watch until the November report</h2>
+    <p class="sub" style="color:#D6EDE0">Today's figures are the baseline. We will track these weekly and compare them in the next report. “Flag if” is our suggested trigger for a closer look, not a target.</p>
+    <div class="tablewrap" style="background:#fff;border-radius:10px"><table>
+      <tr><th>Metric</th><th>Baseline now</th><th>Flag if</th></tr>
+      <tr><td>Mobile purchase ÷ begin checkout (weekly)</td><td>39.1% average since the fix; weekly range 37.7% to 40.8% (34.4% to 36.7% before it)</td><td>A week below 37%, which would suggest the gain has slipped</td></tr>
+      <tr><td>Mobile shipping → payment by device (GA4 funnel)</td><td>Android 50.4%, iPhone 56.7%</td><td>Android does not close the gap to iPhone after shipping-step fixes</td></tr>
+      <tr><td>Mobile shipping → payment (weekly)</td><td>54% since the fix; weekly range 53.6% to 55.5% (48.6% to 51.8% before it)</td><td>A week below 53%</td></tr>
+      <tr><td>Mobile add to cart → begin checkout</td><td>33.3% (65 days)</td><td>Moves more than 1 point in either direction after cart or login changes</td></tr>
+      <tr><td>Share of users who view a product</td><td>49.4% (54.6% before)</td><td>Keeps falling while Paid Social sessions keep rising</td></tr>
+      <tr><td>Paid Social: share of sessions, revenue per session</td><td>11.4% of sessions, R0.22 per session</td><td>Share rises above about 15% with no improvement in revenue per session</td></tr>
+      <tr><td>Spring Savings revenue per session (Paid Social visitors)</td><td>R0.01, add-to-cart rate 0.3%</td><td>Any change after the layout test, up or down</td></tr>
+      <tr><td>Clarity: <code>setAjaxModelElement</code> binding errors, quick backs</td><td>About 562K occurrences, 12.9% of sessions</td><td>Errors not falling after the developer fixes</td></tr>
+      <tr><td>Clarity: largest paint, interaction delay (mobile)</td><td>3.65s, 384ms</td><td>Either gets worse</td></tr>
+      <tr><td>Merchant Center products with “Invalid sale price”</td><td>902 (Insight Report)</td><td>Count not falling after the fix</td></tr>
+    </table></div>
+    <div class="callout callout--amber" style="margin-top:18px"><strong>Black Friday is on 27 Nov</strong>The November report will include Black Friday, so total revenue will spike and then dip. We will judge the checkout rates and the Paid Social figures before and after Black Friday and not total sales, so a strong sale cannot hide a fault and a quiet week afterwards cannot look like a decline. We will also re-cut the before and after at the week of 23 Aug once Dis-Chem confirms the fix date.</div>
+  </div>
+</section>
+
+<section class="section section--white">
+  <div class="container">
+    <div class="kicker">Open data points</div>
+    <h2>What this report does not yet show</h2>
+    <div class="grid2" style="margin-top:18px">
+      <div class="card"><p><strong>The fix date is estimated, not confirmed.</strong> Weekly GA4 data places it in the week of 23 Aug, five days after our split at 18 Aug, so the windows are close to clean. Dis-Chem can confirm the exact date.</p></div>
+      <div class="card"><p><strong>Rand values rely on weekly order value.</strong> Sizing uses true order value from GA4 (R783 on mobile, R868 across devices), measured over whole weeks after the estimated fix week, so it is indicative and not a forecast.</p></div>
+      <div class="card"><p><strong>Promotions and seasonality.</strong> The after window includes the 25 Aug – 14 Sep promotion stretch and the 4–10 Oct dip.</p></div>
+      <div class="card"><p><strong>Session recordings are only sampled.</strong> We have Clarity’s metadata and AI summary for 300 delivery-step sessions from one evening. The hypotheses still need the recordings watched across more days and the cart step, and tests, to confirm.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div style="margin-bottom:8px"><strong>Dis-Chem Pharmacies · CRO Report · October 2026</strong></div>
+    <div>Prepared by <strong>Algorithm Agency</strong> · Data source: Google Analytics 4 · Windows: 14 Jun – 17 Aug 2026 (before) and 18 Aug – 21 Oct 2026 (after)</div>
+  </div>
+</footer>
+
+</body>
+</html>
