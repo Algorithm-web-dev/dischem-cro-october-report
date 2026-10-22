@@ -265,95 +265,101 @@
       <tr><td>Dead clicks</td><td>2.4% of sessions (308K)</td><td>Taps on things that do nothing. Worth checking on the cart, delivery and promotion pages.</td></tr>
       <tr><td>Rage clicks</td><td>0.03% of sessions (3.9K)</td><td>Low, so there is no sign of widespread frustration with a single broken control.</td></tr>
       <tr><td>Page speed</td><td>Largest paint 3.65s, interaction delay 384ms</td><td>Both miss the thresholds Google rates as good (2.5s and 200ms). On mobile this slows the cart and checkout pages.</td></tr>
-      <tr><td>JavaScript errors</td><td>20.9M error occurrences</td><td>85% are one generic, unreadable error (<code>[object Object]</code>). About 562K are binding errors on <code>setAjaxModelElement</code> and 212K are <code>flexslider</code> carousel errors. These are occurrences, not sessions. The full list for the developers is below.</td></tr>
+      <tr><td>JavaScript errors</td><td>20.9M error occurrences</td><td>85% are one generic, unreadable error (<code>[object Object]</code>). About 562K are binding errors on <code>setAjaxModelElement</code> and 212K are <code>flexslider</code> carousel errors. These are occurrences, not sessions. The full list for the developers is in the next section.</td></tr>
       <tr><td>Bot sessions</td><td>2.46M flagged as bots, alongside 13.0M counted sessions</td><td>If GA4 counts bot traffic too, conversion rates are understated, and so is every per-session figure in this report.</td></tr>
       <tr><td>Social in-app browsers</td><td>Facebook and Instagram, 841K sessions (6.5%)</td><td>In-app browsers often behave differently from Chrome and Safari for logins, payments and saved carts.</td></tr>
       <tr><td>Login redirect</td><td>348K sessions on the single sign-on redirect page; 315K arrive from the login domain</td><td>The cart and login journey is heavily used, so any fault there affects a large number of shoppers.</td></tr>
       <tr><td>Purchase tracking</td><td>Purchase event 59.6K sessions, Order success event 45.1K</td><td>The two Clarity events for the same outcome differ by about a third, which backs up the tracking caveat in the checkout section.</td></tr>
     </table></div>
     <p class="src">Source: Microsoft Clarity dashboard export, 18 Aug – 21 Oct 2026 (13.0M sessions counted, 2.46M bot sessions flagged). Performance figures are Clarity's averages. The page address for the delivery step is <code>/wizard/delivery/</code>, which is the page to filter recordings by.</p>
-    <div class="grid2" style="margin-top:16px">
-      <div class="callout callout--amber"><strong>Health Hubs traffic matches an ad network</strong>Health Hubs received 386,306 sessions in Clarity, and 386,319 sessions were referred by <code>pangleglobal.com</code>, an advertising network. The match is almost exact, so the traffic very likely comes from that network. It has low engagement (23%) and almost no revenue. This needs confirming with the paid team, and it is worth asking whether that traffic is real shoppers.</div>
-      <h3 style="margin-top:24px">JavaScript errors for the developers</h3>
-      <p class="sub" style="margin-bottom:12px">The errors Clarity recorded for 18 Aug – 21 Oct 2026, from its JavaScript errors export (20.9M occurrences in total). The five below make up about 90% of them.</p>
-      <div class="tablewrap"><table>
-        <tr><th>Error as Clarity reports it</th><th>Occurrences</th><th>Share of all errors</th><th>What it points to</th></tr>
-        <tr><td><code>[object Object]</code></td><td>17.83M</td><td>85.2%</td><td>An error thrown or logged without a readable message, so it cannot be diagnosed from the export alone. It fires across the whole site (see the table below) and does not appear to stop purchases, so it needs tracing and clearing but is unlikely to be the main cause of checkout loss.</td></tr>
-        <tr><td><code>Script error.</code></td><td>314.6K</td><td>1.5%</td><td>The browser hides the detail when an error comes from a script loaded from another domain, such as a third-party tag. Worth checking which external scripts load on the cart and checkout pages.</td></tr>
-        <tr><td>Knockout binding error: <code>unable to process binding "afterrender: function(){return setAjaxModelElement}"</code>, in two variants (one ends “can't find…”; the export cuts the message off)</td><td>295.5K and 266.3K (561.8K together)</td><td>2.7%</td><td>A page component calls <code>setAjaxModelElement</code> after it renders and the call fails. The “can't find…” wording is how Safari on iPhone reports a missing function or variable. Sessions with this error are mostly iPhone Safari and far less often begin checkout or purchase (see below). This is the first error to fix.</td></tr>
-        <tr><td><code>$(...).flexslider is not a function</code></td><td>212.1K</td><td>1.0%</td><td>The carousel script runs when the flexslider plugin has not loaded. This is a script loading or ordering fault. In the sessions with the binding error the same fault also appears for the fotorama gallery and the brands carousel (32K and 30K occurrences), which suggests a shared cause such as a script that failed to load.</td></tr>
-        <tr><td><code>checkOnlyInts</code>, reported as “can't find variable: checkonlyints” (Safari wording) and “checkonlyints is not defined” (Chrome wording)</td><td>201.8K and 136.1K (337.9K together)</td><td>1.6%</td><td>A function is missing when the cart page runs. It fires on the cart (see below) and is the cart-update fault seen in a recording. It does not stop checkout, but it is a repeatable fault on the page that matters most.</td></tr>
-      </table></div>
-      <h3 style="margin-top:24px">The <code>setAjaxModelElement</code> binding error: who it affects</h3>
-      <p class="sub" style="margin-bottom:12px">Clarity dashboard filtered to sessions with the “can't find…” binding error alone, 18 Aug – 21 Oct 2026. That is 261,036 sessions, about 2.0% of the 13.04M, and it holds all 266.3K occurrences of that error.</p>
-      <div class="tablewrap"><table>
-        <tr><th>Measure</th><th>Sessions with the error</th><th>All sessions</th></tr>
-        <tr><td>Browser: MobileSafari</td><td>68.2%</td><td>33.9%</td></tr>
-        <tr><td>Browser: Google app (also runs on Apple's browser engine on iPhone)</td><td>14.2%</td><td>5.4%</td></tr>
-        <tr><td>Browser: ChromeMobile</td><td>12.9%</td><td>37.7%</td></tr>
-        <tr><td>Added to cart</td><td>3.83%</td><td>4.19%</td></tr>
-        <tr><td>Began checkout (Clarity smart event)</td><td>0.02% (58)</td><td>0.26% (34,012)</td></tr>
-        <tr><td>Sessions with a purchase</td><td>0.09% (237)</td><td>0.35% (45,069)</td></tr>
-        <tr><td>Pages per session, active time</td><td>3.37 pages, 25s</td><td>2.00 pages, 57s</td></tr>
-      </table></div>
-      <p class="src">Source: Microsoft Clarity dashboard exports, with and without the JavaScript error filter. The pages these sessions visit are mostly browse pages: the homepage (24.6K), the cart (14.3K, about 2% of cart sessions), On Promotion (8.8K), Stores (5.6K), Spring Savings (5.4K) and La Roche-Posay (5.4K). The delivery step is not among the top twelve. The same pattern appeared when the filter also required the <code>[object Object]</code> error (221,498 sessions, 68.5% MobileSafari, 0.05% with a purchase).</p>
-      <div class="callout callout--amber"><strong>A fault linked to fewer purchases, but not an iPhone-wide problem</strong>Sessions with this error add to cart at close to the normal rate (3.8% against 4.2%), yet far fewer begin checkout (0.02% against 0.26%) or buy (0.09% against 0.35%), and they are mostly on iPhone browsers. GA4 does not show iPhone shoppers doing worse at the cart step overall, though: 31.4% of iPhone add-to-cart users begin checkout against 32.1% on Android (table in the “Where users are still lost” section). The affected sessions are about 2% of all sessions, so this is a contained fault and not the main reason carts do not reach checkout. This is a correlation and not proof. The error may be a symptom, these are short browsing sessions, and Clarity's own checkout and purchase events may be missed when scripts fail, which would make the gap look larger than it is. If these shoppers had bought at the site rate, there would have been roughly 650 more purchases in 65 days (an upper bound, since browse-heavy sessions convert less). It is still worth fixing first because it is a specific, cheap fault.</div>
-
-      <h3 style="margin-top:24px">The cart update error: <code>checkOnlyInts</code></h3>
-      <p class="sub" style="margin-bottom:12px">Clarity dashboard filtered to sessions with either wording of the error, as a JavaScript error or a click error, 18 Aug – 21 Oct 2026: 107,815 sessions, about 0.8% of the 13.04M.</p>
-      <div class="tablewrap"><table>
-        <tr><th>Measure</th><th>Sessions with the error</th><th>All sessions</th></tr>
-        <tr><td>Top pages</td><td>Cart 43.5K and 8.9K, search results 5.5K</td><td>Cart 643.6K</td></tr>
-        <tr><td>Share of cart-page sessions with the error</td><td colspan="2">About 7% (43.5K of 643.6K)</td></tr>
-        <tr><td>Browser: MobileSafari, ChromeMobile, Chrome</td><td>47.5%, 25.3%, 10.3%</td><td>33.9%, 37.7%, 8.8%</td></tr>
-        <tr><td>Pages per session</td><td>6.96</td><td>2.00</td></tr>
-        <tr><td>Dead clicks</td><td>7.10%</td><td>2.36%</td></tr>
-        <tr><td>Interaction delay (INP)</td><td>528ms</td><td>384ms</td></tr>
-        <tr><td>Sessions with a purchase</td><td>5.52% (5,938)</td><td>0.35% (45,069)</td></tr>
-      </table></div>
-      <p class="src">Source: Microsoft Clarity dashboard exports, with and without the JavaScript error filter. These are long cart sessions that began checkout (4,441 sessions) and often bought, so the 5.5% purchase rate should not be compared with the site-wide 0.35%. The comparison that matters is dead clicks and interaction delay, which are well above the site average.</p>
-      <div class="callout"><strong>A cart fault that does not block buying</strong>Shoppers who hit this error are engaged, and 5.5% still bought, so it is not what stops most carts reaching checkout. But their sessions show three times the dead clicks (7.1% against 2.4%) and a slower interaction delay, which fits cart controls that do not respond when tapped. It affects about one cart session in 15 and is a clear fix. Clarity also records a tracking error in checkout (<code>undefined is not an object (evaluating 'trackcheckout.step.tostring')</code>, 3.5K occurrences) that is worth including in the event audit.</div>
-
-      <h3 style="margin-top:24px">Where <code>[object Object]</code> fires</h3>
-      <p class="sub" style="margin-bottom:12px">Clarity dashboard filtered to sessions with this error, 18 Aug – 21 Oct 2026: 9.06M of 13.04M sessions (69.5%) have it.</p>
-      <div class="tablewrap"><table>
-        <tr><th>Page</th><th>Sessions with the error</th><th>Share of the page's sessions</th></tr>
-        <tr><td>Delivery step <code>/wizard/delivery/</code></td><td>296,388</td><td>86%</td></tr>
-        <tr><td>Customer account <code>/customer/account/</code></td><td>203,152</td><td>85%</td></tr>
-        <tr><td>Login redirect <code>/sso/redirect/index/</code></td><td>286,678</td><td>82%</td></tr>
-        <tr><td>Search results <code>/catalogsearch/result/</code></td><td>1,900,257</td><td>81%</td></tr>
-        <tr><td>Spring Savings</td><td>396,872</td><td>70%</td></tr>
-        <tr><td>Homepage</td><td>951,408</td><td>68%</td></tr>
-        <tr><td>Cart <code>/checkout/cart/</code></td><td>Below 104K (not in the filtered top 12 pages)</td><td>Under about 16%</td></tr>
-      </table></div>
-      <p class="src">Source: Microsoft Clarity dashboard exports, with and without the JavaScript error filter. The error is spread across browsers (61% to 79% of sessions in each of the four largest) and is present in 82% of sessions with a purchase (36,805 of 45,069), so it does not block buying. About 85% of the sessions Clarity flags as bots also raise it, so part of the volume may not be shoppers. Sessions with the error also load slower (largest paint 4.02s against 3.65s overall), which may only reflect that they view more pages.</p>
-      <div class="callout"><strong>Note for the developers</strong>These are specific, repeatable faults, so they can be fixed without waiting for tests. Clarity's export shows the error text and totals only. To see which pages and devices each error fires on, open Clarity's JavaScript errors view, click an error and filter its sessions by page, browser and device. Its recordings show what the shopper was doing when it fired. We suggest starting with the <code>setAjaxModelElement</code> binding error, then the cart error, then the carousel errors, and then tracing <code>[object Object]</code>. The last is the biggest by volume, but it appears on almost every page and purchases still complete, so clearing it mainly makes the error report readable and may reveal other faults hidden behind it. Because most shoppers are on mobile, fixing these is also one of the cheapest ways to improve reliability.</div>
-    </div>
+    <div class="callout callout--amber" style="margin-top:16px"><strong>Health Hubs traffic matches an ad network</strong>Health Hubs received 386,306 sessions in Clarity, and 386,319 sessions were referred by <code>pangleglobal.com</code>, an advertising network. The match is almost exact, so the traffic very likely comes from that network. It has low engagement (23%) and almost no revenue. This needs confirming with the paid team, and it is worth asking whether that traffic is real shoppers.</div>
 
     <h3>A sample of 300 mobile delivery-step sessions</h3>
-    <p class="sub" style="margin-bottom:12px">The 300 most recent mobile sessions that visited the delivery step (<code>/wizard/delivery/</code>), from about 20:50 to 23:58 on 21 Oct. It is a small, late-evening sample, so read it as direction and not as a rate. Clarity recorded 140,451 mobile sessions on this page in the whole period.</p>
-    <div class="tablewrap"><table>
-      <tr><th>What the 300 sessions did</th><th>Sessions</th><th>Share</th></tr>
-      <tr><td>Session ended on the delivery step</td><td>175</td><td>58%</td></tr>
-      <tr><td>Went back to the cart</td><td>49</td><td>16%</td></tr>
-      <tr><td>Reached the checkout page</td><td>8</td><td>3%</td></tr>
-      <tr><td>Reached the payment redirect or the order success page</td><td>4</td><td>1.3%</td></tr>
-      <tr><td>Left for search, product or other pages</td><td>64</td><td>21%</td></tr>
-      <tr><td>Stayed 30 seconds or less</td><td>108</td><td>36%</td></tr>
-      <tr><td>Single-page sessions</td><td>91</td><td>30%</td></tr>
-      <tr><td>Users who appear in more than one session within the three hours</td><td>44 of 242 users</td><td>18%</td></tr>
-    </table></div>
-    <p class="src">Source: Microsoft Clarity recordings export (last 300 sessions, Device: Mobile, URL is exactly the delivery step), 21 Oct 2026. A session that ends on the delivery page may continue later in a new session, so the first row is an upper bound on abandonment.</p>
+<p class="sub" style="margin-bottom:12px">The 300 most recent mobile sessions that visited the delivery step (<code>/wizard/delivery/</code>), from about 20:50 to 23:58 on 21 Oct. It is a small, late-evening sample, so read it as direction and not as a rate. Clarity recorded 140,451 mobile sessions on this page in the whole period.</p>
+<div class="tablewrap"><table>
+<tr><th>What the 300 sessions did</th><th>Sessions</th><th>Share</th></tr>
+<tr><td>Session ended on the delivery step</td><td>175</td><td>58%</td></tr>
+<tr><td>Went back to the cart</td><td>49</td><td>16%</td></tr>
+<tr><td>Reached the checkout page</td><td>8</td><td>3%</td></tr>
+<tr><td>Reached the payment redirect or the order success page</td><td>4</td><td>1.3%</td></tr>
+<tr><td>Left for search, product or other pages</td><td>64</td><td>21%</td></tr>
+<tr><td>Stayed 30 seconds or less</td><td>108</td><td>36%</td></tr>
+<tr><td>Single-page sessions</td><td>91</td><td>30%</td></tr>
+<tr><td>Users who appear in more than one session within the three hours</td><td>44 of 242 users</td><td>18%</td></tr>
+</table></div>
+<p class="src">Source: Microsoft Clarity recordings export (last 300 sessions, Device: Mobile, URL is exactly the delivery step), 21 Oct 2026. A session that ends on the delivery page may continue later in a new session, so the first row is an upper bound on abandonment.</p>
+<div class="grid2" style="margin-top:16px">
+<div class="callout callout--amber"><strong>Most sessions stall before checkout</strong>Only about 4% of these sessions got as far as the checkout page, the payment redirect or the order success page, and 44 users came back for a second to fifth attempt within three hours. People are trying to continue and not getting through. This is consistent with the shipping step being our largest remaining loss.</div>
+<div class="callout"><strong>Clarity's summary of the recordings</strong>Clarity's AI summary of the same sample points to three things: repeated JavaScript errors during browsing and checkout, clicks on the store selection prompt ("Please make your selection") that do not progress on the Collect in Store option, and a few payment declines or dead clicks late in the flow. These are leads to confirm by watching the recordings, not findings.</div>
+</div>
     <div class="grid2" style="margin-top:16px">
-      <div class="callout callout--amber"><strong>Most sessions stall before checkout</strong>Only about 4% of these sessions got as far as the checkout page, the payment redirect or the order success page, and 44 users came back for a second to fifth attempt within three hours. People are trying to continue and not getting through. This is consistent with the shipping step being our largest remaining loss.</div>
-      <div class="callout"><strong>Clarity's summary of the recordings</strong>Clarity's AI summary of the same sample points to three things: repeated JavaScript errors during browsing and checkout, clicks on the store selection prompt ("Please make your selection") that do not progress on the Collect in Store option, and a few payment declines or dead clicks late in the flow. These are leads to confirm by watching the recordings, not findings.</div>
+      <div class="callout callout--teal"><strong>What five individual sessions add</strong>Clarity's summaries of five long mobile sessions (a small, anecdotal set) add three leads. First, updating the cart repeatedly triggered a JavaScript error (<code>checkOnlyInts is not defined</code>) in one session, and errors also appeared as another shopper moved between product pages and the delivery step. Second, shoppers move back and forth between shopping and the delivery step, adding items, removing items and logging in part-way through. Some of the losses we count at the shipping step may be shoppers carrying on shopping, so a clearer way to keep the basket and delivery choice while browsing is worth testing. Third, one shopper tried to check out with Collect in Store and Capitec payment, then left to browse, which fits the store selection and payment issues in the Clarity summary. All three need more recordings to confirm.</div>
+      <div class="callout callout--teal"><strong>The iPhone skew is the sample, not the funnel</strong>84% of the sampled sessions were on iOS and 65% on Safari, against 34% for Safari across all Clarity sessions. GA4 shows iPhone and Android shoppers reach the shipping step in almost equal numbers (53.9K and 53.5K users), so Android shoppers are not dropping out earlier. The skew most likely comes from the late-evening sample, and the sample should be read as direction only.</div>
     </div>
-        <div class="callout callout--teal"><strong>What five individual sessions add</strong>Clarity's summaries of five long mobile sessions (a small, anecdotal set) add three leads. First, updating the cart repeatedly triggered a JavaScript error (<code>checkOnlyInts is not defined</code>) in one session, and errors also appeared as another shopper moved between product pages and the delivery step. Second, shoppers move back and forth between shopping and the delivery step, adding items, removing items and logging in part-way through. Some of the losses we count at the shipping step may be shoppers carrying on shopping, so a clearer way to keep the basket and delivery choice while browsing is worth testing. Third, one shopper tried to check out with Collect in Store and Capitec payment, then left to browse, which fits the store selection and payment issues in the Clarity summary. All three need more recordings to confirm.</div>
-<div class="callout callout--teal"><strong>The iPhone skew is the sample, not the funnel</strong>84% of the sampled sessions were on iOS and 65% on Safari, against 34% for Safari across all Clarity sessions. GA4 shows iPhone and Android shoppers reach the shipping step in almost equal numbers (53.9K and 53.5K users), so Android shoppers are not dropping out earlier. The skew most likely comes from the late-evening sample, and the sample should be read as direction only.</div>
   </div>
 </section>
 
 <section class="section section--white">
+  <div class="container">
+    <div class="kicker">For the developers</div>
+    <h2>JavaScript errors Clarity recorded</h2>
+    <p class="sub" style="margin-bottom:12px">The errors Clarity recorded for 18 Aug – 21 Oct 2026, from its JavaScript errors export (20.9M occurrences in total). The five below make up about 90% of them.</p>
+    <div class="tablewrap"><table>
+<tr><th>Error as Clarity reports it</th><th>Occurrences</th><th>Share of all errors</th><th>What it points to</th></tr>
+<tr><td><code>[object Object]</code></td><td>17.83M</td><td>85.2%</td><td>An error thrown or logged without a readable message, so it cannot be diagnosed from the export alone. It fires across the whole site (see the table below) and does not appear to stop purchases, so it needs tracing and clearing but is unlikely to be the main cause of checkout loss.</td></tr>
+<tr><td><code>Script error.</code></td><td>314.6K</td><td>1.5%</td><td>The browser hides the detail when an error comes from a script loaded from another domain, such as a third-party tag. Worth checking which external scripts load on the cart and checkout pages.</td></tr>
+<tr><td>Knockout binding error: <code>unable to process binding "afterrender: function(){return setAjaxModelElement}"</code>, in two variants (one ends “can't find…”; the export cuts the message off)</td><td>295.5K and 266.3K (561.8K together)</td><td>2.7%</td><td>A page component calls <code>setAjaxModelElement</code> after it renders and the call fails. The “can't find…” wording is how Safari on iPhone reports a missing function or variable. Sessions with this error are mostly iPhone Safari and far less often begin checkout or purchase (see below). This is the first error to fix.</td></tr>
+<tr><td><code>$(...).flexslider is not a function</code></td><td>212.1K</td><td>1.0%</td><td>The carousel script runs when the flexslider plugin has not loaded. This is a script loading or ordering fault. In the sessions with the binding error the same fault also appears for the fotorama gallery and the brands carousel (32K and 30K occurrences), which suggests a shared cause such as a script that failed to load.</td></tr>
+<tr><td><code>checkOnlyInts</code>, reported as “can't find variable: checkonlyints” (Safari wording) and “checkonlyints is not defined” (Chrome wording)</td><td>201.8K and 136.1K (337.9K together)</td><td>1.6%</td><td>A function is missing when the cart page runs. It fires on the cart (see below) and is the cart-update fault seen in a recording. It does not stop checkout, but it is a repeatable fault on the page that matters most.</td></tr>
+</table></div>
+    <div class="callout" style="margin-top:18px"><strong>Note for the developers</strong>These are specific, repeatable faults, so they can be fixed without waiting for tests. The detail behind the first four errors is below. Clarity's export shows the error text and totals only. To see which pages and devices each error fires on, open Clarity's JavaScript errors view, click an error and filter its sessions by page, browser and device. Its recordings show what the shopper was doing when it fired. We suggest starting with the <code>setAjaxModelElement</code> binding error, then the cart error, then the carousel errors, and then tracing <code>[object Object]</code>. The last is the biggest by volume, but it appears on almost every page and purchases still complete, so clearing it mainly makes the error report readable and may reveal other faults hidden behind it. Because most shoppers are on mobile, fixing these is also one of the cheapest ways to improve reliability.</div>
+
+    <h3 style="margin-top:36px">The <code>setAjaxModelElement</code> binding error: who it affects</h3>
+<p class="sub" style="margin-bottom:12px">Clarity dashboard filtered to sessions with the “can't find…” binding error alone, 18 Aug – 21 Oct 2026. That is 261,036 sessions, about 2.0% of the 13.04M, and it holds all 266.3K occurrences of that error.</p>
+<div class="tablewrap"><table>
+<tr><th>Measure</th><th>Sessions with the error</th><th>All sessions</th></tr>
+<tr><td>Browser: MobileSafari</td><td>68.2%</td><td>33.9%</td></tr>
+<tr><td>Browser: Google app (also runs on Apple's browser engine on iPhone)</td><td>14.2%</td><td>5.4%</td></tr>
+<tr><td>Browser: ChromeMobile</td><td>12.9%</td><td>37.7%</td></tr>
+<tr><td>Added to cart</td><td>3.83%</td><td>4.19%</td></tr>
+<tr><td>Began checkout (Clarity smart event)</td><td>0.02% (58)</td><td>0.26% (34,012)</td></tr>
+<tr><td>Sessions with a purchase</td><td>0.09% (237)</td><td>0.35% (45,069)</td></tr>
+<tr><td>Pages per session, active time</td><td>3.37 pages, 25s</td><td>2.00 pages, 57s</td></tr>
+</table></div>
+<p class="src">Source: Microsoft Clarity dashboard exports, with and without the JavaScript error filter. The pages these sessions visit are mostly browse pages: the homepage (24.6K), the cart (14.3K, about 2% of cart sessions), On Promotion (8.8K), Stores (5.6K), Spring Savings (5.4K) and La Roche-Posay (5.4K). The delivery step is not among the top twelve. The same pattern appeared when the filter also required the <code>[object Object]</code> error (221,498 sessions, 68.5% MobileSafari, 0.05% with a purchase).</p>
+<div class="callout callout--amber"><strong>A fault linked to fewer purchases, but not an iPhone-wide problem</strong>Sessions with this error add to cart at close to the normal rate (3.8% against 4.2%), yet far fewer begin checkout (0.02% against 0.26%) or buy (0.09% against 0.35%), and they are mostly on iPhone browsers. GA4 does not show iPhone shoppers doing worse at the cart step overall, though: 31.4% of iPhone add-to-cart users begin checkout against 32.1% on Android (table in the “Where users are still lost” section). The affected sessions are about 2% of all sessions, so this is a contained fault and not the main reason carts do not reach checkout. This is a correlation and not proof. The error may be a symptom, these are short browsing sessions, and Clarity's own checkout and purchase events may be missed when scripts fail, which would make the gap look larger than it is. If these shoppers had bought at the site rate, there would have been roughly 650 more purchases in 65 days (an upper bound, since browse-heavy sessions convert less). It is still worth fixing first because it is a specific, cheap fault.</div>
+
+<h3 style="margin-top:36px">The cart update error: <code>checkOnlyInts</code></h3>
+<p class="sub" style="margin-bottom:12px">Clarity dashboard filtered to sessions with either wording of the error, as a JavaScript error or a click error, 18 Aug – 21 Oct 2026: 107,815 sessions, about 0.8% of the 13.04M.</p>
+<div class="tablewrap"><table>
+<tr><th>Measure</th><th>Sessions with the error</th><th>All sessions</th></tr>
+<tr><td>Top pages</td><td>Cart 43.5K and 8.9K, search results 5.5K</td><td>Cart 643.6K</td></tr>
+<tr><td>Share of cart-page sessions with the error</td><td colspan="2">About 7% (43.5K of 643.6K)</td></tr>
+<tr><td>Browser: MobileSafari, ChromeMobile, Chrome</td><td>47.5%, 25.3%, 10.3%</td><td>33.9%, 37.7%, 8.8%</td></tr>
+<tr><td>Pages per session</td><td>6.96</td><td>2.00</td></tr>
+<tr><td>Dead clicks</td><td>7.10%</td><td>2.36%</td></tr>
+<tr><td>Interaction delay (INP)</td><td>528ms</td><td>384ms</td></tr>
+<tr><td>Sessions with a purchase</td><td>5.52% (5,938)</td><td>0.35% (45,069)</td></tr>
+</table></div>
+<p class="src">Source: Microsoft Clarity dashboard exports, with and without the JavaScript error filter. These are long cart sessions that began checkout (4,441 sessions) and often bought, so the 5.5% purchase rate should not be compared with the site-wide 0.35%. The comparison that matters is dead clicks and interaction delay, which are well above the site average.</p>
+<div class="callout"><strong>A cart fault that does not block buying</strong>Shoppers who hit this error are engaged, and 5.5% still bought, so it is not what stops most carts reaching checkout. But their sessions show three times the dead clicks (7.1% against 2.4%) and a slower interaction delay, which fits cart controls that do not respond when tapped. It affects about one cart session in 15 and is a clear fix. Clarity also records a tracking error in checkout (<code>undefined is not an object (evaluating 'trackcheckout.step.tostring')</code>, 3.5K occurrences) that is worth including in the event audit.</div>
+
+<h3 style="margin-top:36px">Where <code>[object Object]</code> fires</h3>
+<p class="sub" style="margin-bottom:12px">Clarity dashboard filtered to sessions with this error, 18 Aug – 21 Oct 2026: 9.06M of 13.04M sessions (69.5%) have it.</p>
+<div class="tablewrap"><table>
+<tr><th>Page</th><th>Sessions with the error</th><th>Share of the page's sessions</th></tr>
+<tr><td>Delivery step <code>/wizard/delivery/</code></td><td>296,388</td><td>86%</td></tr>
+<tr><td>Customer account <code>/customer/account/</code></td><td>203,152</td><td>85%</td></tr>
+<tr><td>Login redirect <code>/sso/redirect/index/</code></td><td>286,678</td><td>82%</td></tr>
+<tr><td>Search results <code>/catalogsearch/result/</code></td><td>1,900,257</td><td>81%</td></tr>
+<tr><td>Spring Savings</td><td>396,872</td><td>70%</td></tr>
+<tr><td>Homepage</td><td>951,408</td><td>68%</td></tr>
+<tr><td>Cart <code>/checkout/cart/</code></td><td>Below 104K (not in the filtered top 12 pages)</td><td>Under about 16%</td></tr>
+</table></div>
+  </div>
+</section>
+
+<section class="section">
   <div class="container">
     <div class="kicker">Opportunity sizing</div>
     <h2>What each lever is worth</h2>
@@ -367,14 +373,14 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section section--white">
   <div class="container">
     <div class="kicker">This month</div>
     <h2>Four actions for the next four weeks</h2>
     <p class="sub">We kept this month's list short so it can be finished before the November report. “Fix” is a change to make, “Look at” is an analysis to run, and “Confirm” is something to verify before we rely on the numbers. Owners are suggestions for discussion.</p>
     <div class="tablewrap"><table>
       <tr><th>Action</th><th>Type</th><th>Why it matters</th><th>Suggested owner</th></tr>
-      <tr><td>Fix the JavaScript errors (<code>setAjaxModelElement</code> binding errors first, <code>checkOnlyInts is not defined</code>, the <code>flexslider</code> error, and tracing the unreadable <code>[object Object]</code> error that makes up 85% of all errors, which fires sitewide; the full list is in the Clarity section), and mask login tokens in Clarity recordings</td><td><span class="pill p1" style="margin:0">Fix</span></td><td>Specific, repeatable faults, with no need to wait for tests. The <code>setAjaxModelElement</code> error is the first to fix: sessions that hit it are mostly iPhone Safari and buy less often. The login redirect address also carries a token with customer details, which Clarity's masking settings can hide.</td><td>Dis-Chem dev team</td></tr>
+      <tr><td>Fix the JavaScript errors (<code>setAjaxModelElement</code> binding errors first, <code>checkOnlyInts is not defined</code>, the <code>flexslider</code> error, and tracing the unreadable <code>[object Object]</code> error that makes up 85% of all errors, which fires sitewide; the full list is in the JavaScript errors section below), and mask login tokens in Clarity recordings</td><td><span class="pill p1" style="margin:0">Fix</span></td><td>Specific, repeatable faults, with no need to wait for tests. The <code>setAjaxModelElement</code> error is the first to fix: sessions that hit it are mostly iPhone Safari and buy less often. The login redirect address also carries a token with customer details, which Clarity's masking settings can hide.</td><td>Dis-Chem dev team</td></tr>
       <tr><td>Audit the shipping, payment and purchase events in GA4 and Clarity</td><td><span class="pill p3" style="margin:0">Confirm</span></td><td>The two checkout views disagree and add payment and purchase fire together, so the size of the gain is uncertain until the events are confirmed. This is also tracked in the Insight Report. Clarity also records a checkout tracking error (<code>trackcheckout.step.tostring</code>, 3.5K occurrences) that should be part of the audit.</td><td>Algorithm with Dis-Chem dev team</td></tr>
       <tr><td>Watch the mobile delivery-step and cart recordings (starting with Collect in Store), and re-test the cart and login journey</td><td><span class="pill p2" style="margin:0">Look at</span></td><td>The shipping step loses 46% of mobile users and the cart step loses 67%. This turns our hypotheses into evidence and decides which fix to build first. Start with Android, where shipping → payment is weakest.</td><td>Algorithm</td></tr>
       <tr><td>Test a product-led layout on Spring Savings, modelled on Beauty Edit</td><td><span class="pill p1" style="margin:0">Fix</span></td><td>It takes about 40% of Paid Social sessions and earns about R0.01 per session from them. Check the single product pages that receive tens of thousands of Paid Social sessions for stock, price and ad match at the same time.</td><td>Algorithm with Dis-Chem team</td></tr>
@@ -393,12 +399,12 @@
   </div>
 </section>
 
-<section class="section section--green">
+<section class="section">
   <div class="container">
     <div class="kicker">Monitoring</div>
     <h2>What we will watch until the November report</h2>
-    <p class="sub" style="color:#D6EDE0">Today's figures are the baseline. We will track these weekly and compare them in the next report. “Flag if” is our suggested trigger for a closer look, not a target.</p>
-    <div class="tablewrap" style="background:#fff;border-radius:10px"><table>
+    <p class="sub">Today's figures are the baseline. We will track these weekly and compare them in the next report. “Flag if” is our suggested trigger for a closer look, not a target.</p>
+    <div class="tablewrap"><table>
       <tr><th>Metric</th><th>Baseline now</th><th>Flag if</th></tr>
       <tr><td>Mobile purchase ÷ begin checkout (weekly)</td><td>39.1% average since the fix; weekly range 37.7% to 40.8% (34.4% to 36.7% before it)</td><td>A week below 37%, which would suggest the gain has slipped</td></tr>
       <tr><td>Mobile shipping → payment by device (GA4 funnel)</td><td>Android 50.4%, iPhone 56.7%</td><td>Android does not close the gap to iPhone after shipping-step fixes</td></tr>
